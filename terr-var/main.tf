@@ -1,11 +1,11 @@
 resource "aws_vpc" "main" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = var.vpc_cidr
 }
 
 resource "aws_subnet" "masub" {
   vpc_id     = aws_vpc.main.id
-  cidr_block = "10.0.1.0/24"
-  availability_zone = "us-east-1a"
+  cidr_block = var.sub_cidr
+  availability_zone = var.az
   map_public_ip_on_launch = "true"
 }
 
@@ -28,9 +28,9 @@ resource "aws_route_table_association" "a" {
 }
 
 resource "aws_instance" "example" {
-  ami           = "ami-053b0d53c279acc90"
-  instance_type = "t2.micro"
+  ami           = var.ami-name
+  instance_type = var.inst-type
   subnet_id     = aws_subnet.masub.id
-  key_name      = "k8s"
+  key_name      = var.key-name
 }
 
